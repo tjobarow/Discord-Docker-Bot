@@ -8,7 +8,7 @@ handler = logging.FileHandler(filename='logs/discord.log',encoding='utf-8',mode=
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
-ALLOWED_USER_LIST = ["tjobarow#5849","Seth#7954"]
+ALLOWED_USER_LIST = ["tjobarow#5849"]
 
 #Create Instance of Bot Client
 client = discord.Client()

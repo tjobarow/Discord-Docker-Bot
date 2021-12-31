@@ -41,4 +41,3 @@ class DockerToolbox:
 if __name__ == "__main__":
     dtb= DockerToolbox()
     print(json.dumps(dtb.CONTAINER_LIST,indent=3))
-    #print(dtb.restartContainer("11534306ba62f374c4cc39574de797e87f945d2ae4db50e4b6de57662b7a9c45"))
