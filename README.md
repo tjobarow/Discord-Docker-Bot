@@ -23,7 +23,7 @@ To build the container image:
 3. Create a directory on the host machine to use for persistent log storage
         e.g: mkdir -p /var/log/discord_bot
 4. Build the image. This command should be ran from the Docker_Discord_Bot directory. Copy the image ID for step 5.
-        docker build -t dockerdiscordbot/bot:docker-discord-v1 .
+        docker build -t tjobarow/docker_discord_bot:docker-discord-v1 .
 5. Run a container based on the image. Make sure to replace the local directory volume, with the one you created in step 3. 
         docker run -d --name discord_bot -v /absolute/path/to/log/folder:/app/logs <IMAGE ID>
 6. The bot should now be operational. 
