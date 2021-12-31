@@ -1,2 +1,6 @@
 env.txt
 /discord
+discord.log
+DiscordBot.log
+*.json
+/__pycache__
