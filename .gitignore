@@ -4,3 +4,5 @@ discord.log
 DiscordBot.log
 *.json
 /__pycache__
+Dockerfile
+docker_cmds.txt

@@ -1,10 +1,10 @@
-import discord, logging, os, re
+import discord, logging, os
 from DockerToolbox import DockerToolbox
 
 #Configuring logging
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler(filename='DiscordBot.log',encoding='utf-8',mode='w')
+handler = logging.FileHandler(filename='logs/discord.log',encoding='utf-8',mode='w')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
@@ -25,7 +25,7 @@ async def on_ready():
 #Wait for messages to be sent
 @client.event
 async def on_message(message):
-    print(message.channel.name)
+
     #If message starts with "!"
     if message.content.startswith("!"):
         #We do not want to process messages from the bot itself. So we only process messages if message author is not the client (bot) username.
@@ -52,6 +52,8 @@ async def on_message(message):
                         container_str+="------------------------------------------------------------------\n"
                         #await message.channel.send(container_str)
                         container_index+=1
+                    await message.add_reaction("💻")
+                    await message.add_reaction("💯")
                     await message.channel.send(container_str)
                 
                 ###################
@@ -67,8 +69,10 @@ async def on_message(message):
                     else:
                         result = dtb.restartContainer(provided_id)
                         if result:
+                            await message.add_reaction("✅")
                             await message.channel.send(f"The container with ID {provided_id} was successfully restarted.\nPlease check the **!list** command to verify that it is running.")
                         else:
+                            await message.add_reaction("❌")
                             await message.channel.send(f"The container with ID {provided_id} **FAILED TO RESTART**.\nPlease check the **!list** command to verify that the container is running before attempting to restart.\n\n*Contact the system administrator if the container is running but this command is failing to restart it.")
                 
                 
@@ -85,9 +89,19 @@ async def on_message(message):
                     else:
                         result = dtb.startContainer(provided_id)
                         if result:
+                            await message.add_reaction("✅")
                             await message.channel.send(f"The container with ID {provided_id} was successfully started.\nPlease check the **!list** command to verify that it is running.")
                         else:
+                            await message.add_reaction("❌")
                             await message.channel.send(f"The container with ID {provided_id} **FAILED TO START**.\n\n*Contact the system administrator if the container is running but this command is failing to restart it.")
+                
+                ###################
+                # This section will reply with list of available commands and their syntax. 
+                ###################
+                if "help" in str(message.content):
+                    help_str = """There are currently four supported commands:\n**!help** - Provides a list of available commands and syntax examples.\n**!list** - Lists ALL containers on the Docker remote host. This is where you retreive IDs for other commands.\n**!restart <<ID>>** - Restarts the container associated with the ID sent\n**!start <<ID>>** - Starts the container associated with the ID sent\n"""
+                    await message.channel.send(help_str)
+            
             else:
                 mention_user = message.author.mention
                 await message.channel.send(f"{mention_user}, you are not within the list of approved users to manage game server containers.")

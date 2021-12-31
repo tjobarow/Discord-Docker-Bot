@@ -1,0 +1,25 @@
+FROM python:3.9
+
+RUN mkdir app && mkdir app/logs 
+WORKDIR /app
+
+RUN groupadd -r bot && useradd -r -g bot bot
+
+RUN pip install --upgrade pip
+COPY requirements.txt .
+RUN pip install -r requirements.txt --no-cache-dir
+
+
+ENV PYTHONUNBUFFERED=1
+ENV DOCKER_BASE_URL=  <<DOCKER REMOTE API URL>>
+ENV DISCORD_BOT_TOKEN=   <<DISCORD APP SECRET>>
+
+COPY DiscordBot.py app/DiscordBot.py
+COPY DockerToolbox.py app/DockerToolbox.py
+
+RUN chown bot:bot /app
+
+LABEL author="tjobarow@gmail.com" \
+      name="Docker Discord Bot"
+
+CMD ["python3", "DiscordBot.py"]
